@@ -6,7 +6,7 @@ mtype_dict = {'000': 'Join Request', '001': 'Join Accept', '010': 'Unconfirmed D
     
 major_dict = {'00': 'LoRaWAN 1.0.x', '01': 'LoRaWAN 1.1'}
 
-def decrypt(data):
+def decrypt(time, data, rssi, snr):
     MHDR = get_MHDR(data[0])
     DevAddr = data[1:5][::-1]
     FCtrl = get_FCtrl(data[5])
@@ -19,7 +19,7 @@ def decrypt(data):
         FPort = "MAC Command"
     FRMPayload = data[9+FCtrl[4]:-4]
     MIC = data[-4:]
-    return Packet(MHDR[0], MHDR[1], DevAddr, FCtrl, FCnt, FOpts, FPort, FRMPayload, MIC)
+    return Packet(time, MHDR[0], MHDR[1], DevAddr, FCtrl, FCnt, FOpts, FPort, FRMPayload, MIC, rssi, snr)
 
 def get_MHDR(MHDR_hex):
     MHDR = []
