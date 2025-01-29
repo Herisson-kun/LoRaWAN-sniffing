@@ -13,11 +13,12 @@ The project is built around a system using a Raspberry Pi 4 Model B and an RFM9x
 
 2. **CSV Logging**:  
    The captured frames are logged in a `packet_capture.csv` file, which includes:
+   - The time at which the frame has been received.
    - The frames in hexadecimal format.
    - Reception quality indicators such as RSSI and SNR.
 
 3. **Conversion to PCAP**:  
-   A Python script reads the CSV file, parses the frames, identifies each field of the protocol (e.g., MHDR, DevAddr, MIC, etc.), and converts the frames into Python objects. Using these objects, the script generates a PCAP file compatible with Wireshark for analysis.
+   A Python script reads the CSV file, parses the frames, identifies each field of the protocol (e.g., MHDR, DevAddr, Encrypted Payload, etc.), and converts the frames into Python objects. Using these objects, the script generates a PCAP file compatible with Wireshark for analysis.
 
 4. **Testing with MKR WAN 1310**:  
    To generate frames for testing, a **MKR WAN 1310** module connected to The Things Network (TTN) was used. The Arduino code provided in the repository configures this module to send frames to TTN.
@@ -35,6 +36,19 @@ The project is built around a system using a Raspberry Pi 4 Model B and an RFM9x
 
 - **MKR WAN 1310**  
   Configured to send LoRaWAN frames, this module was used to test the sniffer.
+
+### Wiring
+
+**Hardware Setup**  
+   The RFM9x module is connected to the Raspberry Pi via the SPI interface:  
+   - **Vin**: Raspberry Pi 3.3V  
+   - **GND**: Raspberry Pi Ground  
+   - **G0**: Raspberry Pi GPIO #5  
+   - **RST**: Raspberry Pi GPIO #25  
+   - **CLK**: Raspberry Pi SCK  
+   - **MISO**: Raspberry Pi MISO  
+   - **MOSI**: Raspberry Pi MOSI  
+   - **CS**: Raspberry Pi CE1  
 
 ---
 
@@ -79,16 +93,3 @@ The MKR WAN 1310 module, configured with Arduino, serves as the LoRaWAN frame tr
 Once configured, you can upload the provided Arduino code to the MKR WAN 1310. The module will send LoRaWAN frames to TTN, allowing the sniffer to intercept and analyze them.
 
 ---
-
-## Wiring
-
-**Hardware Setup**  
-   The RFM9x module is connected to the Raspberry Pi via the SPI interface:  
-   - **Vin**: Raspberry Pi 3.3V  
-   - **GND**: Raspberry Pi Ground  
-   - **G0**: Raspberry Pi GPIO #5  
-   - **RST**: Raspberry Pi GPIO #25  
-   - **CLK**: Raspberry Pi SCK  
-   - **MISO**: Raspberry Pi MISO  
-   - **MOSI**: Raspberry Pi MOSI  
-   - **CS**: Raspberry Pi CE1  
