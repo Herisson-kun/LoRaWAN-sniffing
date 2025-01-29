@@ -1,4 +1,4 @@
-from class_packet import Packet
+from utils.class_packet import Packet
 from scapy.all import wrpcap,Ether
 import os
 

@@ -1,4 +1,4 @@
-from class_packet import Packet
+from utils.class_packet import Packet
 
 mtype_dict = {'000': 'Join Request', '001': 'Join Accept', '010': 'Unconfirmed Data Up', 
                   '011': 'Unconfirmed Data Down', '100': 'Confirmed Data Up', 

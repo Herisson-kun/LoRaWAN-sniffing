@@ -1,5 +1,5 @@
 import csv
-from utils import decrypt
+from utils.utils import decrypt
 
 
 packets = []
