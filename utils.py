@@ -4,10 +4,12 @@ mtype_dict = {'000': 'Join Request', '001': 'Join Accept', '010': 'Unconfirmed D
                   '011': 'Unconfirmed Data Down', '100': 'Confirmed Data Up', 
                   '101': 'Confirmed Data Down', '110': 'Reserved', '111': 'Proprietary'}
     
-major_dict = {'00': 'LoRaWAN 1.0.x', '01': 'LoRaWAN 1.1'}
+major_dict = {'00': 'LoRaWAN 1.0.x', '01': 'LoRaWAN 1.1', '10': 'UK', '11': 'UK'}
 
 def decrypt(time, data, rssi, snr):
     MHDR = get_MHDR(data[0])
+    if MHDR == "Error":
+        return "Error"
     DevAddr = data[1:5][::-1]
     FCtrl = get_FCtrl(data[5])
     FCnt = get_counter(data[6:8][::-1])
@@ -26,7 +28,16 @@ def get_MHDR(MHDR_hex):
     MHDR_int = int(MHDR_hex, 16)
     MHDR_bin = bin(MHDR_int)[2:]
     Mtype = mtype_dict[MHDR_bin[:3]]
+    RFU = MHDR_bin[3:6]
     Major = major_dict[MHDR_bin[6:]]
+
+    if RFU != '000':
+        return "Error"
+    if Major == 'UK':
+        return "Error"
+    if Mtype == 'Reserved' or Mtype == 'Proprietary':
+        return "Error"
+    
     MHDR.extend([Mtype, Major])
     return MHDR
 
@@ -49,3 +60,4 @@ def get_counter(counter_hex):
 
 def to_hex(data):
     return [hex(x) for x in data]
+

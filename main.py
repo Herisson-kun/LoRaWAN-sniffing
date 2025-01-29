@@ -3,9 +3,10 @@ from utils import decrypt
 
 
 packets = []
-
+counter_good = 0
+counter_bad = 0
 # Ouvrir le fichier CSV
-with open('csv/packet_capture.csv', mode='r') as file:
+with open('csv/lorawan_capture.csv', mode='r') as file:
     reader = csv.reader(file)
     next(reader)  # Passer l'en-tête
     
@@ -19,11 +20,23 @@ with open('csv/packet_capture.csv', mode='r') as file:
         # Convertir le rawpacket (en hexadécimal) en une liste de bytes
         rawpacket_split = rawpacket.split()
         data = [x for x in rawpacket_split]
-
         # Appeler la fonction decrypt pour obtenir un objet Packet
-        packet = decrypt(time, data, rssi, snr)
-        
-        # Ajouter l'objet Packet à la liste
-        packets.append(packet)
+        try:
+            packet = decrypt(time, data, rssi, snr)
+            if packet == "Error":
+                counter_bad+=1
+            elif rssi > 30:
+                counter_bad+=1 
+            else:
+                packets.append(packet)
+                counter_good+=1
+        except:
+            print("Error")        
 
-print(packets)
+for packet in packets:
+    print(packet)
+    print()
+
+print("Bad Packets : ", counter_bad)
+print("Good Packets : ", counter_good)
+print("ratio : ", counter_good/(counter_good+counter_bad)*100, "%")
