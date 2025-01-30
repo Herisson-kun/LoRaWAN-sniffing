@@ -1,5 +1,7 @@
 import csv
 from utils.utils import decrypt
+import os
+import datetime
 
 
 packets = []
@@ -36,7 +38,35 @@ with open('csv/lorawan_capture.csv', mode='r') as file:
 for packet in packets:
     print(packet)
     print()
+    # Create the capture directory if it doesn't exist
+    capture_dir = 'csv/capture'
+    os.makedirs(capture_dir, exist_ok=True)
 
+    # Generate a unique filename based on the current timestamp
+    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f'processed_packets_{timestamp}.csv'
+    filepath = os.path.join(capture_dir, filename)
+
+    with open(filepath, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        # Écrire l'en-tête
+        writer.writerow(['Time', 'Mtype', 'Major', 'DevAddr', 'FCtrl', 'FCnt', 'FOpts', 'FPort', 'FRMPayload', 'MIC', 'RSSI', 'SNR'])
+        
+        for packet in packets:
+            writer.writerow([
+                packet.Time,
+                packet.Mtype,
+                packet.Major,
+                packet.DevAddr,
+                packet.FCtrl,
+                packet.FCnt,
+                packet.FOpts,
+                packet.FPort,
+                packet.FRMPayload,
+                packet.MIC,
+                packet.RSSI,
+                packet.SNR
+            ])
 print("Bad Packets : ", counter_bad)
 print("Good Packets : ", counter_good)
 print("ratio : ", counter_good/(counter_good+counter_bad)*100, "%")
