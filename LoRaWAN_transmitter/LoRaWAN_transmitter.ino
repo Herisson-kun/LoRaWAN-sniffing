@@ -55,7 +55,7 @@ void loop() {
   if (err > 0) {
     Serial.println("Message sent correctly!");
   } else {
-    Serial.println("Error sending message :(");
+    Serial.println("Error sending message :");
     Serial.println("(you may send a limited amount of messages per minute, depending on the signal strength");
     Serial.println("it may vary from 1 message every couple of seconds to 1 message every minute)");
   }
