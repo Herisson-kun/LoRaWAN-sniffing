@@ -16,9 +16,10 @@ The project is built around a system using a Raspberry Pi 4 Model B and an RFM9x
    - The time at which the frame has been received.
    - The frames in hexadecimal format.
    - Reception quality indicators such as RSSI and SNR.
+   Please place the caputre .csv file in the /csv directory.
 
 3. **Raw Data Processing**:  
-   Instead of converting the frames into PCAP files, a Python script processes the raw data directly from the CSV file. The script parses the frames, identifies each field of the protocol (e.g., MHDR, DevAddr, Encrypted Payload, etc.), and generates a new CSV file with all the fields visible for detailed analysis.
+   A Python script processes the raw data from the CSV file. The script parses the frames, identifies each field of the protocol (e.g., MHDR, DevAddr, Encrypted Payload, etc.), and generates a new CSV file in csv/capture with all the fields visible for detailed analysis.
 
 4. **Testing with MKR WAN 1310**:  
    To generate frames for testing, a **MKR WAN 1310** module connected to The Things Network (TTN) was used. The Arduino code provided in the repository configures this module to send frames to TTN.
